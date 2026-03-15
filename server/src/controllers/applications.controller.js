@@ -1,4 +1,4 @@
-import {getAllApplications, createApplication, getApplicationById} from "../db/queries/applications.queries.js"
+import {getAllApplications, createApplication, getApplicationById,updateApplication,deleteApplication} from "../db/queries/applications.queries.js"
 
 export async function getApplications(req,res){
     try{
@@ -51,4 +51,72 @@ export async function getApplication(req,res){
     }catch(err){
         return res.status(500).json({err:"somthing went wrong"})  
     }
+}
+
+
+export async function patchApplication(req, res) {
+  let { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ err: "bad input" });
+  }
+
+  id = Number(id);
+
+  if (isNaN(id)) {
+    return res.status(400).json({ err: "bad input" });
+  }
+
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({ err: "no fields to update" });
+  }
+
+  try {
+    const existingApplication = await getApplicationById(id);
+
+    if (!existingApplication) {
+      return res.status(404).json({ err: "not found" });
+    }
+
+    const updatedData = {
+      company_name: req.body.company_name ?? existingApplication.company_name,
+      job_title: req.body.job_title ?? existingApplication.job_title,
+      status: req.body.status ?? existingApplication.status,
+      applied_date: req.body.applied_date ?? existingApplication.applied_date,
+      notes: req.body.notes ?? existingApplication.notes,
+      location: req.body.location ?? existingApplication.location,
+      job_type: req.body.job_type ?? existingApplication.job_type,
+      salary: req.body.salary ?? existingApplication.salary,
+      job_link: req.body.job_link ?? existingApplication.job_link,
+    };
+
+    const updatedApplication = await updateApplication(id, updatedData);
+
+    return res.status(200).json(updatedApplication);
+  } catch (err) {
+    return res.status(500).json({ err: "something went wrong" });
+  }
+}
+
+
+
+export async function delApplication(req,res){
+    let {id} = req.params
+    if(!id){
+        return res.status(400).json({ err: "bad input" }) 
+    }
+    id = Number(id);
+
+  if (isNaN(id)) {
+    return res.status(400).json({ err: "bad input" });
+  }
+try{
+    const deletedApplication = await deleteApplication(id)
+    if(!deletedApplication){
+         return res.status(404).json({ err: "not found" });
+    }
+    return res.status(200).json({ message: "row deleted" });
+}catch(err){
+    return res.status(500).json({ err: "something went wrong" });
+}
 }
