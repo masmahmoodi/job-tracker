@@ -7,20 +7,49 @@ import {useState, useEffect} from "react"
 export default function EditApplicationPage(){
     const { id } = useParams()
     const [form, setForm] = useState({company_name:"", job_title:""})
+    const [isLoading, setLoading] = useState(true)
+    const [error, setError] = useState("")
     const navigate = useNavigate()
 
  
     useEffect(()=>{
-        const  getDataToEdit =  async () =>{
-            
-            const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
-        })
+      
 
-       const EditResult = await res.json()
-       setForm(EditResult)
-    }
-    getDataToEdit()
+      
+            const  getDataToEdit =  async () =>{
+                  try{
+                const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
+            })
+
+            if(!res.ok){
+                throw new Error("failed to edit application ")
+            }
+
+        const EditResult = await res.json()
+        setForm(EditResult)
+        }
+        catch(err){
+        setError("Failed to edit application");
+     }finally{
+        setLoading(false)
+     }
+        
+     }
+     getDataToEdit()
     },[id])
+
+
+    if(isLoading){
+        return (
+            <h1>Loading ...</h1>
+        )
+    }
+
+    if(error){
+        return (
+            <h1>{error}</h1>
+        )
+    }
 
     function handleChange(e){
         setForm(preForm => {
@@ -30,16 +59,26 @@ export default function EditApplicationPage(){
 
     async function handleSubmit(e){
         e.preventDefault()
+        try{
 
-         const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
-            method:"PATCH",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(form)
+            const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
+               method:"PATCH",
+               headers:{"Content-Type":"application/json"},
+               body:JSON.stringify(form)
 
-        }) 
-
+   
+           }) 
+           if(!res.ok){
+            throw new Error("fialed to submit")
+           }
         setForm({ company_name: "", job_title: "" });
         navigate("/applications")
+
+        }catch(err){
+            setError("failed to submit")
+        }
+
+        
     }
 
      return(
