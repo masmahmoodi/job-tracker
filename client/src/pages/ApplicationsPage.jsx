@@ -10,6 +10,9 @@ export default function ApplicationsPage() {
     const fetchApplications = async () => {
       try {
         const res = await fetch("http://127.0.0.1:5001/api/applications");
+        if(!res.ok){
+          throw new Error("nothing to fetch")
+        }
         const data = await res.json();
         setApplications(data);
       } catch (err) {

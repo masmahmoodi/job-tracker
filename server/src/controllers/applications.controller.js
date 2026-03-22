@@ -1,14 +1,13 @@
 import {getAllApplications, createApplication, getApplicationById,updateApplication,deleteApplication} from "../db/queries/applications.queries.js"
 
-export async function getApplications(req,res){
-    try{
-
-        const applications = await getAllApplications()
-        return res.status(200).json(applications )
-    }catch(err){
-        return res.status(500).json({err:"something went wrong!!"})
-        
-    }
+export async function getApplications(req, res) {
+  try {
+    const applications = await getAllApplications();
+    return res.status(200).json(applications);
+  } catch (err) {
+    console.error("GET /api/applications failed:", err);
+    return res.status(500).json({ err: "something went wrong!!" });
+  }
 }
 
 
