@@ -6,7 +6,7 @@ import {useState, useEffect} from "react"
 
 export default function EditApplicationPage(){
     const { id } = useParams()
-    const [form, setForm] = useState({company_name:"", job_title:""})
+    const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"" });
     const [isLoading, setLoading] = useState(true)
     const [error, setError] = useState("")
     const navigate = useNavigate()

@@ -1,15 +1,15 @@
 import pool from "../index.js";
 
-export async function getAllApplications() {
+export async function getAllApplications(user_id) {
   const result = await pool.query(`
-    SELECT * FROM applications
+    SELECT * FROM applications WHERE user_id =$1
     ORDER BY created_at DESC
-  `)
+  `, [user_id])
 
   return result.rows;
 }
 
-export async function createApplication(data) {
+export async function createApplication(data,user_id) {
   const {
     company_name,
     job_title,
@@ -33,9 +33,10 @@ export async function createApplication(data) {
         location,
         job_type,
         salary,
-        job_link
+        job_link,
+        user_id 
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING *
     `,
     [
@@ -48,6 +49,7 @@ export async function createApplication(data) {
       job_type,
       salary,
       job_link,
+      user_id
     ]
   )
 
@@ -55,15 +57,15 @@ export async function createApplication(data) {
 }
 
 
-export async function getApplicationById(id){
+export async function getApplicationById(id,user_id){
   const result = await pool.query(`
-    select * from applications where id = $1
-    `,[id])
+    select * from applications where id = $1 AND user_id = $2
+    `,[id, user_id])
     return result.rows[0]
 
 }
 
-export async function updateApplication(id, data) {
+export async function updateApplication(id, data,user_id) {
   const {
     company_name,
     job_title,
@@ -90,7 +92,7 @@ export async function updateApplication(id, data) {
         salary = $8,
         job_link = $9,
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $10
+      WHERE id = $10 AND user_id = $11
       RETURNING *
     `,
     [
@@ -104,6 +106,7 @@ export async function updateApplication(id, data) {
       salary,
       job_link,
       id,
+      user_id
     ]
   );
 
@@ -111,11 +114,11 @@ export async function updateApplication(id, data) {
 }
 
 
-export async function deleteApplication(id){
+export async function deleteApplication(id,user_id){
   const result = await pool.query(`
-      DELETE FROM applications where id =$1
+      DELETE FROM applications where id =$1 AND user_id=$2
       RETURNING *
-    `,[id])
+    `,[id,user_id])
     return result.rows[0]
 
 }

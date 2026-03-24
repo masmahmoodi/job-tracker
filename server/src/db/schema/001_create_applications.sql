@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS applications (
     job_link TEXT,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER  FOREIGN KEY (user_id) REFRENCES users(id)
 );

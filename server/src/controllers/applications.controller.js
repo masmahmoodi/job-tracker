@@ -2,7 +2,7 @@ import {getAllApplications, createApplication, getApplicationById,updateApplicat
 
 export async function getApplications(req, res) {
   try {
-    const applications = await getAllApplications();
+    const applications = await getAllApplications(req.user.userId);
     return res.status(200).json(applications);
   } catch (err) {
     console.error("GET /api/applications failed:", err);
@@ -21,7 +21,7 @@ export async function postApplication(req,res){
         }
 
         try{
-            const createdApplication = await createApplication(req.body)
+            const createdApplication = await createApplication(req.body,req.user.userId)
             return res.status(201).json(createdApplication)
 
         }catch(err){
@@ -42,7 +42,7 @@ export async function getApplication(req,res){
     }
     try{
 
-        const application = await getApplicationById(id)
+        const application = await getApplicationById(id, req.user.userId)
         if(!application){
             return res.status(404).json({err:"not found "})
         }
@@ -71,7 +71,7 @@ export async function patchApplication(req, res) {
   }
 
   try {
-    const existingApplication = await getApplicationById(id);
+    const existingApplication = await getApplicationById(id, req.user.userId);
 
     if (!existingApplication) {
       return res.status(404).json({ err: "not found" });
@@ -89,7 +89,7 @@ export async function patchApplication(req, res) {
       job_link: req.body.job_link ?? existingApplication.job_link,
     };
 
-    const updatedApplication = await updateApplication(id, updatedData);
+    const updatedApplication = await updateApplication(id, updatedData, req.user.userId);
 
     return res.status(200).json(updatedApplication);
   } catch (err) {
@@ -110,7 +110,7 @@ export async function delApplication(req,res){
     return res.status(400).json({ err: "bad input" });
   }
 try{
-    const deletedApplication = await deleteApplication(id)
+    const deletedApplication = await deleteApplication(id, req.user.userId)
     if(!deletedApplication){
          return res.status(404).json({ err: "not found" });
     }

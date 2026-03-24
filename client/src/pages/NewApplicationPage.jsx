@@ -4,7 +4,7 @@ import { useNavigate, Link  } from "react-router-dom"
 
 
 export default function NewApplicationPage() {
-  const [form, setForm] = useState({ company_name: "", job_title: "" });
+  const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"" });
   const [error, setError] = useState("");
  const navigate = useNavigate()
 
