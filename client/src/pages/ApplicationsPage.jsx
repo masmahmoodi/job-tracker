@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ApplicationList from "../components/ApplicationList.jsx";
+import Navbar from "../components/Navbar.jsx"
 import {Link } from "react-router-dom"
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
@@ -36,9 +37,15 @@ export default function ApplicationsPage() {
     try {
       setError("");
 
+      const token = localStorage.getItem("token");
+
       const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
 
       if (!res.ok) {
         throw new Error("Failed to delete application");
@@ -63,6 +70,7 @@ export default function ApplicationsPage() {
   return (
 
   <>
+  <Navbar />
    <Link to='/applications/create'>Create Applications</Link>
    <ApplicationList applications={applications} handleDelete={handleDelete} />
   </>

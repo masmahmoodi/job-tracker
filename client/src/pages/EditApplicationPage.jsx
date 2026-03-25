@@ -18,8 +18,14 @@ export default function EditApplicationPage(){
       
             const  getDataToEdit =  async () =>{
                   try{
+               const token = localStorage.getItem("token");
+
                 const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
-            })
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                });
+
 
             if(!res.ok){
                 throw new Error("failed to edit application ")
@@ -61,9 +67,10 @@ export default function EditApplicationPage(){
         e.preventDefault()
         try{
 
+            const token = localStorage.getItem("token")
             const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
                method:"PATCH",
-               headers:{"Content-Type":"application/json"},
+               headers: { "Content-Type": "application/json", Authorization:`Bearer ${token}` },
                body:JSON.stringify(form)
 
    

@@ -24,10 +24,10 @@ export default function NewApplicationPage() {
 
     try {
       setError("");
-
+      const token = localStorage.getItem("token")
       const res = await fetch("http://127.0.0.1:5001/api/applications", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization:`Bearer ${token}` },
         body: JSON.stringify(form),
       });
 
