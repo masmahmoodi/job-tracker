@@ -9,7 +9,14 @@ export default function ApplicationsPage() {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:5001/api/applications");
+        const token = localStorage.getItem("token");
+
+         const res = await fetch("http://127.0.0.1:5001/api/applications", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+});
+ 
         if(!res.ok){
           throw new Error("nothing to fetch")
         }
