@@ -5,21 +5,23 @@ import EditApplicationPage from "./pages/EditApplicationPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import Layout from "./components/Layout.jsx"
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Layout />}>
         <Route
-          path="/"
+          index 
           element={
             <ProtectedRoute>
-              <Navigate to="/applications" replace />
+              <Navigate to="applications" replace />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/applications"
+          path="applications"
           element={
             <ProtectedRoute>
               <ApplicationsPage />
@@ -27,7 +29,7 @@ function App() {
           }
         />
         <Route
-          path="/applications/create"
+          path="applications/create"
           element={
             <ProtectedRoute>
               <NewApplicationPage />
@@ -35,13 +37,14 @@ function App() {
           }
         />
         <Route
-          path="/applications/:id/edit"
+          path="applications/:id/edit"
           element={
             <ProtectedRoute>
               <EditApplicationPage />
             </ProtectedRoute>
           }
         />
+        </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
       </Routes>

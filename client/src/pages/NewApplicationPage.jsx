@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ApplicationForm from "../components/ApplicationForm.jsx";
-import { useNavigate, Link  } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom";
 
 
 export default function NewApplicationPage() {
@@ -43,10 +43,26 @@ export default function NewApplicationPage() {
   }
 
   return (
-    <>
-      {error && <h1>{error}</h1>}
-      <Link to='/'>See Application</Link>
+    <section className="space-y-6">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.35em] text-amber-200/70">
+            New Entry
+          </p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white">
+            Add a new application
+          </h1>
+        </div>
+        <Link
+          to="/applications"
+          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-amber-200/30 hover:text-amber-100"
+        >
+          Back to dashboard
+        </Link>
+      </div>
+
+      {error && <h1 className="rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-lg text-red-200">{error}</h1>}
       <ApplicationForm handleSubmit={handleSubmit} handleChange={handleChange} form={form} />
-    </>
+    </section>
   );
 }
