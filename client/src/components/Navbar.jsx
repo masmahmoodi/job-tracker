@@ -1,15 +1,16 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import {useAuth} from "../context/AuthContext.jsx"
+
+
 import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const rawUser = localStorage.getItem("user");
-  const user = rawUser ? JSON.parse(rawUser) : null;
+  const {token, user, logout} = useAuth()
 
-  function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+
+  function handleLogout() {
+    logout()
     navigate("/login");
   }
 
@@ -72,7 +73,7 @@ export default function Navbar() {
                   </p>
                 </div>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="rounded-full bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500 px-5 py-2.5 text-sm font-semibold text-black transition hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-300/20"
                 >
                   Logout

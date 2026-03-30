@@ -1,13 +1,14 @@
 import { useState } from "react";
 import ApplicationForm from "../components/ApplicationForm.jsx";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx"
 
 
 export default function NewApplicationPage() {
   const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"" });
   const [error, setError] = useState("");
  const navigate = useNavigate()
-
+ const { token } = useAuth()
   function handleChange(e) {
     setForm((prevForm) => {
       return { ...prevForm, [e.target.name]: e.target.value };
@@ -24,7 +25,7 @@ export default function NewApplicationPage() {
 
     try {
       setError("");
-      const token = localStorage.getItem("token")
+      
       const res = await fetch("http://127.0.0.1:5001/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization:`Bearer ${token}` },

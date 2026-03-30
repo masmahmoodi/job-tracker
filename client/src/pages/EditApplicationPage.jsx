@@ -1,7 +1,7 @@
 import ApplicationForm from "../components/ApplicationForm.jsx";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import { useAuth } from "../context/AuthContext.jsx"
 
 
 export default function EditApplicationPage() {
@@ -11,11 +11,12 @@ export default function EditApplicationPage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
- 
+  const { token } = useAuth()
+
   useEffect(() => {
     const getDataToEdit = async () => {
       try {
-        const token = localStorage.getItem("token");
+        
         const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -36,7 +37,7 @@ export default function EditApplicationPage() {
     };
 
     getDataToEdit();
-  }, [id]);
+  }, [id, token]);
 
 
   if (isLoading) {
@@ -64,7 +65,6 @@ export default function EditApplicationPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
       const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
         method:"PATCH",
         headers: { "Content-Type": "application/json", Authorization:`Bearer ${token}` },

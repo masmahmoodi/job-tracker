@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx"
+
 import logo from "../assets/logo.png";
 
 export default function LoginPage() {
+  const { login, isAuthenticated } = useAuth()  
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+  if (isAuthenticated) {
+    return <Navigate to="/applications" replace />
+  }
   function handleChange(e) {
     setForm((preForm) => {
       return { ...preForm, [e.target.name]: e.target.value };
@@ -30,8 +35,7 @@ export default function LoginPage() {
         throw new Error(data.error || "Failed to login");
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      login(data.token, data.user)
 
       setForm({ email: "", password: "" });
       navigate("/applications");

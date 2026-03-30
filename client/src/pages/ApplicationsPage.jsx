@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import ApplicationList from "../components/ApplicationList.jsx";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx"
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const rawUser = localStorage.getItem("user");
-  const user = rawUser ? JSON.parse(rawUser) : null;
-
+  const { token, user } = useAuth()
+  
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const token = localStorage.getItem("token");
-
+       
          const res = await fetch("http://127.0.0.1:5001/api/applications", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,14 +32,13 @@ export default function ApplicationsPage() {
     };
 
     fetchApplications();
-  }, []);
+  }, [token]);
 
   async function handleDelete(id) {
     try {
       setError("");
 
-      const token = localStorage.getItem("token");
-
+     
       const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
         method: "DELETE",
         headers: {
