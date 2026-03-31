@@ -28,6 +28,7 @@ export async function signup(req, res) {
 
     return res.status(201).json(newUser);
   } catch (error) {
+    console.error("POST /api/auth/signup failed:", error);
     return res.status(500).json({
       error: "Internal server error",
     });
@@ -83,6 +84,7 @@ export async function login(req, res) {
       },
     });
   } catch (error) {
+    console.error("POST /api/auth/login failed:", error);
     return res.status(500).json({
       error: "Internal server error",
     });
