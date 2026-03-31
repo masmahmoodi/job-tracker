@@ -17,7 +17,7 @@ export default function EditApplicationPage() {
     const getDataToEdit = async () => {
       try {
         
-        const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/applications/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -65,7 +65,7 @@ export default function EditApplicationPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/applications/${id}`, {
         method:"PATCH",
         headers: { "Content-Type": "application/json", Authorization:`Bearer ${token}` },
         body:JSON.stringify(form)

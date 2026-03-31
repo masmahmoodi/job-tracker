@@ -25,7 +25,7 @@ export default function SignupPage() {
     setError("");
 
     try {
-      const res = await fetch("http://127.0.0.1:5001/api/auth/signup", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

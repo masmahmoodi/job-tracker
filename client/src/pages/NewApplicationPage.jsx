@@ -26,7 +26,7 @@ export default function NewApplicationPage() {
     try {
       setError("");
       
-      const res = await fetch("http://127.0.0.1:5001/api/applications", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization:`Bearer ${token}` },
         body: JSON.stringify(form),
