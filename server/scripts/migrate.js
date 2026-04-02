@@ -11,15 +11,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const schemaDir = path.resolve(__dirname, "../src/db/schema");
 
+const isProductionDatabase =
+  process.env.NODE_ENV === "production" ||
+  process.env.DB_HOST?.includes("render.com") ||
+  Boolean(process.env.DATABASE_URL);
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD || undefined,
   port: Number(process.env.DB_PORT),
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: isProductionDatabase
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
 });
 
 async function runMigrations() {
