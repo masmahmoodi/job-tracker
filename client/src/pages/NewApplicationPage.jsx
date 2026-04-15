@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext.jsx"
 
 
 export default function NewApplicationPage() {
-  const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"" });
+  const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"", });
   const [error, setError] = useState("");
  const navigate = useNavigate()
  const { token } = useAuth()
@@ -36,7 +36,7 @@ export default function NewApplicationPage() {
         throw new Error("Failed to create application");
       }
 
-      setForm({ company_name: "", job_title: "" });
+      setForm({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"",  });
       navigate("/applications")
     } catch (err) {
       setError("Failed to create application");

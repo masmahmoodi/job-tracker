@@ -94,6 +94,19 @@ export default function ApplicationForm({
             className="w-full rounded-3xl border border-white/10 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-stone-500 focus:border-amber-300/50 focus:ring-2 focus:ring-amber-200/20"
           />
         </div>
+        <div className="sm:col-span-2">
+          <label htmlFor="job_description" className="mb-2 block text-sm font-medium text-stone-200">
+            Job Description
+          </label>
+          <textarea
+            id="job_description"
+            name="job_description"
+            onChange={handleChange}
+            value={form.job_description}
+            rows={6}
+            className="w-full rounded-3xl border border-white/10 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-stone-500 focus:border-amber-300/50 focus:ring-2 focus:ring-amber-200/20"
+          />
+        </div>
       </div>
 
       <div className="mt-8 flex justify-end">

@@ -20,6 +20,8 @@ export async function createApplication(data,user_id) {
     job_type,
     salary,
     job_link,
+    job_description,
+    resume_id
   } = data;
 
   const result = await pool.query(
@@ -34,9 +36,11 @@ export async function createApplication(data,user_id) {
         job_type,
         salary,
         job_link,
-        user_id 
+        user_id,
+        job_description,
+        resume_id
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11,$12)
       RETURNING *
     `,
     [
@@ -49,7 +53,9 @@ export async function createApplication(data,user_id) {
       job_type,
       salary,
       job_link,
-      user_id
+      user_id,
+      job_description,
+      resume_id    
     ]
   )
 
@@ -76,6 +82,8 @@ export async function updateApplication(id, data,user_id) {
     job_type,
     salary,
     job_link,
+    job_description,
+    resume_id
   } = data;
 
   const result = await pool.query(
@@ -91,8 +99,10 @@ export async function updateApplication(id, data,user_id) {
         job_type = $7,
         salary = $8,
         job_link = $9,
+        job_description = $10,
+        resume_id =$11,
         updated_at = CURRENT_TIMESTAMP
-      WHERE id = $10 AND user_id = $11
+      WHERE id = $12 AND user_id = $13
       RETURNING *
     `,
     [
@@ -105,6 +115,8 @@ export async function updateApplication(id, data,user_id) {
       job_type,
       salary,
       job_link,
+      job_description,
+      resume_id,
       id,
       user_id
     ]

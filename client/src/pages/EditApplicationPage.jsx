@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext.jsx"
 
 export default function EditApplicationPage() {
   const { id } = useParams();
-  const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"" });
+  const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"",  });
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ export default function EditApplicationPage() {
       if (!res.ok) {
         throw new Error("fialed to submit");
       }
-      setForm({ company_name: "", job_title: "" });
+      setForm({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"",  });
       navigate("/applications");
     } catch (err) {
       setError("failed to submit");

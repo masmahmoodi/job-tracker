@@ -87,11 +87,13 @@ export async function patchApplication(req, res) {
       job_type: req.body.job_type ?? existingApplication.job_type,
       salary: req.body.salary ?? existingApplication.salary,
       job_link: req.body.job_link ?? existingApplication.job_link,
+      job_description: req.body.job_description ?? existingApplication.job_description,
+      resume_id:req.body.resume_id ?? existingApplication.resume_id
     };
 
     const updatedApplication = await updateApplication(id, updatedData, req.user.userId);
 
-    return res.status(200).json(updatedApplication);
+   return res.status(200).json(updatedApplication);
   } catch (err) {
     return res.status(500).json({ err: "something went wrong" });
   }
