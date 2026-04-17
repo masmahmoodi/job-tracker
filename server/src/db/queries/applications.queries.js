@@ -134,3 +134,22 @@ export async function deleteApplication(id,user_id){
     return result.rows[0]
 
 }
+
+
+export async function getApplicationWithResumeForAnalysis(applicationId, userId) {
+  const result = await pool.query(
+    `
+      SELECT
+        applications.id,
+        applications.job_description,
+        applications.resume_id,
+        resumes.extracted_text
+      FROM applications
+      INNER JOIN resumes ON resumes.id = applications.resume_id
+      WHERE applications.id = $1 AND applications.user_id = $2
+    `,
+    [applicationId, userId]
+  );
+
+  return result.rows[0];
+}
