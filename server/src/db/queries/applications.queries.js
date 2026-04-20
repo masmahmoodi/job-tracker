@@ -1,4 +1,4 @@
-import pool from "../index.js";
+import pool from "../index.js"
 
 export async function getAllApplications(user_id) {
   const result = await pool.query(`
@@ -6,7 +6,7 @@ export async function getAllApplications(user_id) {
     ORDER BY created_at DESC
   `, [user_id])
 
-  return result.rows;
+  return result.rows
 }
 
 export async function createApplication(data,user_id) {
@@ -22,7 +22,7 @@ export async function createApplication(data,user_id) {
     job_link,
     job_description,
     resume_id
-  } = data;
+  } = data
 
   const result = await pool.query(
     `
@@ -59,7 +59,7 @@ export async function createApplication(data,user_id) {
     ]
   )
 
-  return result.rows[0];
+  return result.rows[0]
 }
 
 
@@ -84,7 +84,7 @@ export async function updateApplication(id, data,user_id) {
     job_link,
     job_description,
     resume_id
-  } = data;
+  } = data
 
   const result = await pool.query(
     `
@@ -120,13 +120,18 @@ export async function updateApplication(id, data,user_id) {
       id,
       user_id
     ]
-  );
+  )
 
-  return result.rows[0];
+  return result.rows[0]
 }
 
 
 export async function deleteApplication(id,user_id){
+  await pool.query(`
+      DELETE FROM resume_analyses
+      WHERE application_id = $1
+    `,[id])
+
   const result = await pool.query(`
       DELETE FROM applications where id =$1 AND user_id=$2
       RETURNING *
@@ -149,7 +154,7 @@ export async function getApplicationWithResumeForAnalysis(applicationId, userId)
       WHERE applications.id = $1 AND applications.user_id = $2
     `,
     [applicationId, userId]
-  );
+  )
 
-  return result.rows[0];
+  return result.rows[0]
 }

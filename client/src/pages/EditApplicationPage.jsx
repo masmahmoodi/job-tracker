@@ -1,15 +1,15 @@
-import ApplicationForm from "../components/ApplicationForm.jsx";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import ApplicationForm from "../components/ApplicationForm.jsx"
+import { Link, useParams, useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
 import { useAuth } from "../context/AuthContext.jsx"
 
 
 export default function EditApplicationPage() {
-  const { id } = useParams();
-  const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"",  });
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const { id } = useParams()
+  const [form, setForm] = useState({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"", resume_id:null })
+  const [isLoading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
 
   const { token } = useAuth()
 
@@ -21,23 +21,23 @@ export default function EditApplicationPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
+        })
 
         if (!res.ok) {
-          throw new Error("failed to edit application ");
+          throw new Error("failed to edit application ")
         }
 
-        const editResult = await res.json();
-        setForm(editResult);
+        const editResult = await res.json()
+        setForm(editResult)
       } catch (err) {
-        setError("Failed to edit application");
+        setError("Failed to edit application")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    getDataToEdit();
-  }, [id, token]);
+    getDataToEdit()
+  }, [id, token])
 
 
   if (isLoading) {
@@ -45,7 +45,7 @@ export default function EditApplicationPage() {
       <div className="rounded-[2rem] border border-white/10 bg-white/5 px-6 py-16 text-center">
         <h1 className="text-4xl font-semibold text-white">Loading...</h1>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -53,31 +53,39 @@ export default function EditApplicationPage() {
       <div className="rounded-[2rem] border border-red-400/20 bg-red-500/10 px-6 py-16 text-center">
         <h1 className="text-3xl font-semibold text-white">{error}</h1>
       </div>
-    );
+    )
   }
 
+  
   function handleChange(e) {
     setForm((preForm) => {
-      return { ...preForm, [e.target.name]: e.target.value };
-    });
+      return { ...preForm, [e.target.name]: e.target.value }
+    })
+  }
+
+  
+ function sendResumeToParent(resumeID){
+    setForm(prevForm =>{
+      return {...prevForm,resume_id:resumeID}
+    })
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/applications/${id}`, {
         method:"PATCH",
         headers: { "Content-Type": "application/json", Authorization:`Bearer ${token}` },
         body:JSON.stringify(form)
-      });
+      })
 
       if (!res.ok) {
-        throw new Error("fialed to submit");
+        throw new Error("fialed to submit")
       }
-      setForm({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"",  });
-      navigate("/applications");
+      setForm({ company_name: "", job_title: "", status:"", location:"", notes:"", job_description:"", resume_id:null })
+      navigate("/applications")
     } catch (err) {
-      setError("failed to submit");
+      setError("failed to submit")
     }
   }
 
@@ -100,7 +108,7 @@ export default function EditApplicationPage() {
         </Link>
       </div>
 
-      <ApplicationForm handleChange={handleChange} handleSubmit={handleSubmit} form={form} submitLabel="Save Changes" />
+      <ApplicationForm handleChange={handleChange} handleSubmit={handleSubmit} form={form} submitLabel="Save Changes" sendResumeToParent={sendResumeToParent} />
     </section>
-  );
+  )
 }

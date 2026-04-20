@@ -1,46 +1,46 @@
-import { useState } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { useState } from "react"
+import { Link, useNavigate, Navigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext.jsx"
 
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.png"
 
 export default function LoginPage() {
   const { login, isAuthenticated } = useAuth()  
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" })
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
   if (isAuthenticated) {
     return <Navigate to="/applications" replace />
   }
   function handleChange(e) {
     setForm((preForm) => {
-      return { ...preForm, [e.target.name]: e.target.value };
-    });
+      return { ...preForm, [e.target.name]: e.target.value }
+    })
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
+    e.preventDefault()
+    setError("")
 
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to login");
+        throw new Error(data.error || "Failed to login")
       }
 
       login(data.token, data.user)
 
-      setForm({ email: "", password: "" });
-      navigate("/applications");
+      setForm({ email: "", password: "" })
+      navigate("/applications")
     } catch (err) {
-      setError(err.message);
+      setError(err.message)
     }
   }
 
@@ -123,5 +123,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

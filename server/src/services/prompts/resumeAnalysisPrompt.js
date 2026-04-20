@@ -17,5 +17,7 @@ Return valid JSON only with exactly these keys:
   "missing_keywords": [],
   "suggestions": []
 }
+
+Do not wrap the JSON in markdown or code fences.
 `;
 }

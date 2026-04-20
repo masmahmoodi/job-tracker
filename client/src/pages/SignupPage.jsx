@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { useState } from "react"
+import { Link, useNavigate, Navigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext.jsx"
 
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.png"
 
 export default function SignupPage() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [form, setForm] = useState({ name: "", email: "", password: "" })
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
   
   if (isAuthenticated) {
@@ -16,31 +16,31 @@ export default function SignupPage() {
 
   function handleChange(e) {
     setForm((preForm) => {
-      return { ...preForm, [e.target.name]: e.target.value };
-    });
+      return { ...preForm, [e.target.name]: e.target.value }
+    })
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
+    e.preventDefault()
+    setError("")
 
     try {
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to signup");
+        throw new Error(data.error || "Failed to signup")
       }
 
-      setForm({ name: "", email: "", password: "" });
-      navigate("/login");
+      setForm({ name: "", email: "", password: "" })
+      navigate("/login")
     } catch (err) {
-      setError(err.message);
+      setError(err.message)
     }
   }
 
@@ -134,5 +134,5 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

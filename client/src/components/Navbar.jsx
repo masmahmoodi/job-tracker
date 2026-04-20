@@ -1,17 +1,17 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom"
 import {useAuth} from "../context/AuthContext.jsx"
 
 
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.png"
 
 export default function Navbar() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {token, user, logout} = useAuth()
 
 
   function handleLogout() {
     logout()
-    navigate("/login");
+    navigate("/login")
   }
 
   const navLinkClass = ({ isActive }) =>
@@ -19,7 +19,7 @@ export default function Navbar() {
       isActive
         ? "bg-amber-300/15 text-amber-200 ring-1 ring-amber-200/30"
         : "text-stone-300 hover:bg-white/5 hover:text-white"
-    }`;
+    }`
 
   return (
     <header className="sticky top-0 z-30 pt-4">
@@ -84,5 +84,5 @@ export default function Navbar() {
         </div>
       </div>
     </header>
-  );
+  )
 }

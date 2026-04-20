@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
-import ApplicationList from "../components/ApplicationList.jsx";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react"
+import ApplicationList from "../components/ApplicationList.jsx"
+import { Link } from "react-router-dom"
 import { useAuth } from "../context/AuthContext.jsx"
 
 export default function ApplicationsPage() {
-  const [applications, setApplications] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [applications, setApplications] = useState([])
+  const [isLoading, setLoading] = useState(true)
+  const [error, setError] = useState("")
   const { token, user } = useAuth()
+  const [analysisByApplicationId, setAnalysisByApplicationId] = useState({})
+
   
   useEffect(() => {
     const fetchApplications = async () => {
@@ -17,47 +19,92 @@ export default function ApplicationsPage() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-});
+    })
  
         if(!res.ok){
           throw new Error("nothing to fetch")
         }
-        const data = await res.json();
-        setApplications(data);
+        const data = await res.json()
+        setApplications(data)
       } catch (err) {
-        setError("Failed to fetch applications");
+        setError("Failed to fetch applications")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchApplications();
-  }, [token]);
+    fetchApplications()
+  }, [token])
 
   async function handleDelete(id) {
     try {
-      setError("");
+      setError("")
 
      
-      const res = await fetch(`http://127.0.0.1:5001/api/applications/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/applications/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
+      })
 
 
       if (!res.ok) {
-        throw new Error("Failed to delete application");
+        throw new Error("Failed to delete application")
       }
 
       setApplications((prevApplications) =>
         prevApplications.filter((application) => application.id !== id)
-      );
+      )
     } catch (err) {
-      setError("Failed to delete application");
+      setError("Failed to delete application")
     }
   }
+
+ async function analyzeResume(applicationId) {
+  setAnalysisByApplicationId((prev) => ({
+    ...prev,
+    [applicationId]: {
+      loading: true,
+      data: prev[applicationId]?.data || null,
+      error: "",
+    },
+  }))
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/resume-analyses/${applicationId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    const analyze = await res.json()
+
+    if (!res.ok) {
+      throw new Error(analyze.err || "Failed to analyze the resume")
+    }
+
+    setAnalysisByApplicationId((prev) => ({
+          ...prev,
+          [applicationId]: {
+            loading: false,
+            data: analyze,
+            error: "",
+          },
+        }))
+      } catch (err) {
+        setAnalysisByApplicationId((prev) => ({
+          ...prev,
+          [applicationId]: {
+            loading: false,
+            data: prev[applicationId]?.data || null,
+            error: err.message || "Failed to analyze the resume",
+          },
+        }))
+      }
+    }
+
 
   if (isLoading) {
     return (
@@ -67,7 +114,7 @@ export default function ApplicationsPage() {
         </p>
         <h1 className="mt-4 text-4xl font-semibold text-white">Fetching your pipeline...</h1>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -75,7 +122,7 @@ export default function ApplicationsPage() {
       <div className="rounded-[2rem] border border-red-400/20 bg-red-500/10 px-6 py-16 text-center">
         <h1 className="text-3xl font-semibold text-white">{error}</h1>
       </div>
-    );
+    )
   }
 
   return (
@@ -110,7 +157,7 @@ export default function ApplicationsPage() {
         </div>
       </div>
 
-      <ApplicationList applications={applications} handleDelete={handleDelete} />
+      <ApplicationList applications={applications} handleDelete={handleDelete} analyzeResume={analyzeResume} analysisByApplicationId={analysisByApplicationId} />
     </section>
-  );
+  )
 }

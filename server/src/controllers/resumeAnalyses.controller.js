@@ -1,5 +1,6 @@
 import { getApplicationWithResumeForAnalysis } from "../db/queries/applications.queries.js"
 import analyzeResumeAgainstJob from "../services/analyzeResumeAgainstJob.js"
+import createResumeAnalysis from "../db/queries/resumeAnalyses.queries.js"
 export default async  function analyzeApplicationResume(req,res){
     try {
         let {id} = req.params
@@ -19,7 +20,22 @@ export default async  function analyzeApplicationResume(req,res){
         }
 
         const aiResult = await analyzeResumeAgainstJob(result.extracted_text, result.job_description)
-        return res.status(200).json(aiResult)
+        const aiAnalysis = await createResumeAnalysis(result,aiResult)
+        if(!aiAnalysis){
+            return res.status(404).json({err:"not found"})
+        }
+
+        return res.status(200).json({
+            id :aiAnalysis.id,
+            application_id: aiAnalysis.application_id,
+            resume_id: aiAnalysis.resume_id,
+            summary: aiAnalysis.summary,
+            strengths: JSON.parse(aiAnalysis.strengths),
+           missing_keywords: JSON.parse(aiAnalysis.missing_keywords),
+           suggestions: JSON.parse(aiAnalysis.suggestions)
+
+
+        })
     } catch (error) {
         console.error("POST /api/resume-analyses/:id failed:", error);
         return res.status(500).json({
