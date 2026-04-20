@@ -64,11 +64,19 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
 
       <input
         ref={fileInputRef}
+        id="resume-file"
         type="file"
         accept="application/pdf,.pdf"
         onChange={handleFile}
-        className="mt-4 block w-full text-sm text-stone-300"
+        className="hidden"
       />
+
+      <label
+        htmlFor="resume-file"
+        className="mt-4 inline-flex cursor-pointer rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-amber-200/30 hover:text-amber-100"
+      >
+        Choose Resume PDF
+      </label>
 
       <p className="mt-2 text-sm text-stone-400">
         {selectedFile ? selectedFile.name : "No file selected"}
