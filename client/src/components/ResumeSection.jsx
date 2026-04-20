@@ -5,6 +5,7 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
   const [selectedFile, setSelectedFile] = useState(null)
   const [error, setError] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
+  const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef(null)
  const { token } = useAuth()
   function handleFile(e) {
@@ -19,7 +20,7 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
     }
 
   try{
-    
+      setIsUploading(true)
       setError("")
       setSuccessMessage("")
 
@@ -50,6 +51,8 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
 
   }catch(err){
     setError(err.message || "Failed to upload resume")
+  } finally {
+    setIsUploading(false)
   }
 
 }
@@ -59,7 +62,7 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
     <div className="sm:col-span-2 rounded-3xl border border-white/10 bg-black/25 px-4 py-4">
       <p className="text-sm font-medium text-stone-200">Resume</p>
       <p className="mt-2 text-sm text-stone-400">
-        {resumeId ? `Attached resume ID: ${resumeId}` : "No resume attached yet"}
+        {resumeId ? "A resume is attached to this application" : "No resume attached yet"}
       </p>
 
       <input
@@ -84,10 +87,11 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
 
       <button
         type="button"
-        className="mt-4 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-amber-200/30 hover:text-amber-100"
+        disabled={isUploading}
+        className="mt-4 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-amber-200/30 hover:text-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
         onClick={handleUpload}
       >
-        Upload Resume
+        {isUploading ? "Uploading..." : "Upload Resume"}
       </button>
       {error && (
             <p className="mt-3 rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
