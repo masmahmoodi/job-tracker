@@ -13,11 +13,15 @@ export default function ApplicationForm({
     >
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.35em] text-amber-200/70">
-          Application Details
+          Job Application
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-          Make every opportunity easy to track
+          Save the role, the resume, and the job details in one place
         </h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-stone-400 sm:text-base">
+          Add the core application info, attach the resume you want to use, and keep the job
+          description ready for AI resume analysis.
+        </p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
@@ -116,7 +120,7 @@ export default function ApplicationForm({
         <input
           type="submit"
           value={submitLabel || "Save Application"}
-          className="cursor-pointer rounded-full bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500 px-6 py-3 font-semibold text-black transition hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-300/20"
+          className="w-full cursor-pointer rounded-full bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-500 px-6 py-3 font-semibold text-black transition hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-300/20 sm:w-auto"
         />
       </div>
     </form>

@@ -15,7 +15,7 @@ export default function Navbar() {
   }
 
   const navLinkClass = ({ isActive }) =>
-    `rounded-full px-4 py-2 text-sm font-medium transition ${
+    `rounded-full px-3 py-2 text-center text-sm font-medium transition sm:px-4 ${
       isActive
         ? "bg-amber-300/15 text-amber-200 ring-1 ring-amber-200/30"
         : "text-stone-300 hover:bg-white/5 hover:text-white"
@@ -36,14 +36,14 @@ export default function Navbar() {
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200/70">
                 Sharks Tracker
               </p>
-              <p className="max-w-[16rem] text-base font-semibold leading-tight text-white sm:max-w-none sm:text-xl">
-                Track every move like a closer
+              <p className="max-w-[14rem] text-base font-semibold leading-tight text-white sm:max-w-none sm:text-lg lg:text-xl">
+                Organize job applications and compare resumes to roles
               </p>
             </div>
           </Link>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between lg:gap-4">
-            <nav className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
+            <nav className="grid grid-cols-1 gap-2 xs:grid-cols-2 sm:flex sm:flex-wrap sm:items-center">
               {token ? (
                 <>
                   <NavLink to="/applications" className={navLinkClass}>
@@ -67,15 +67,7 @@ export default function Navbar() {
 
             {token && (
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <div className="rounded-3xl border border-white/10 bg-white/5 px-4 py-3 text-left sm:hidden">
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-stone-400">
-                    Active User
-                  </p>
-                  <p className="mt-1 truncate text-sm font-medium text-amber-100">
-                    {user?.name || user?.email || "Signed in"}
-                  </p>
-                </div>
-                <div className="hidden min-w-[190px] rounded-3xl border border-white/10 bg-white/5 px-4 py-3 text-left sm:block">
+                <div className="hidden min-w-[190px] rounded-3xl border border-white/10 bg-white/5 px-4 py-3 text-left md:block">
                   <p className="text-[11px] uppercase tracking-[0.3em] text-stone-400">
                     Active User
                   </p>

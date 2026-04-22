@@ -131,14 +131,14 @@ export default function ApplicationsPage() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl">
             <p className="text-sm font-semibold uppercase tracking-[0.4em] text-amber-200/70">
-              Command Center
+              Job Tracker
             </p>
             <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              {user?.name ? `${user.name}'s job pipeline` : "Your job pipeline"}
+              {user?.name ? `${user.name}'s application dashboard` : "Your application dashboard"}
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-stone-300 sm:text-lg">
-              Keep every lead organized, spot momentum fast, and move through your search
-              with a cleaner system than spreadsheets and scattered tabs.
+              Track job applications, attach resumes, and use AI resume analysis to see how
+              well each resume matches a role.
             </p>
           </div>
 

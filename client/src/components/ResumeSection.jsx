@@ -62,7 +62,9 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
     <div className="sm:col-span-2 rounded-3xl border border-white/10 bg-black/25 px-4 py-4">
       <p className="text-sm font-medium text-stone-200">Resume</p>
       <p className="mt-2 text-sm text-stone-400">
-        {resumeId ? "A resume is attached to this application" : "No resume attached yet"}
+        {resumeId
+          ? "A resume is attached and ready to use for this application"
+          : "Attach the PDF version of the resume you want to analyze against this role"}
       </p>
 
       <input
@@ -76,7 +78,7 @@ export default function ResumeSection({ resumeId,sendResumeToParent }) {
 
       <label
         htmlFor="resume-file"
-        className="mt-4 inline-flex cursor-pointer rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-amber-200/30 hover:text-amber-100"
+        className="mt-4 inline-flex cursor-pointer rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-stone-100 transition hover:border-amber-200/30 hover:text-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
       >
         Choose Resume PDF
       </label>
